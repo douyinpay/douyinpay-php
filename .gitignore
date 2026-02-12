@@ -1,0 +1,9 @@
+/vendor/
+test/
+
+composer.lock
+.idea
+.vscode/
+
+/pack.sh
+douyinpay-php.zip

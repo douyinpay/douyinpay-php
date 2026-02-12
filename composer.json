@@ -1,0 +1,16 @@
+{
+    "name": "douyinpay/douyinpay",
+    "description": "douyinpay php sdk",
+    "type": "library",
+    "require": {
+        "guzzlehttp/guzzle": "^6.5 || ^7.0",
+        "guzzlehttp/uri-template": "^0.2 || ^1.0"
+
+    },
+    "autoload": {
+        "psr-4": {
+            "DouYinPay\\" : "src/",
+            "DouYinPay\\Demo\\" : "demo/"
+        }
+    }
+}
