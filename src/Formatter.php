@@ -4,6 +4,8 @@ namespace DouYinPay;
 
 class Formatter
 {
+    public const MAXIMUM_CLOCK_OFFSET = 300;
+
     public static function nonce(int $size = 32): string
     {
         if ($size < 1) {
