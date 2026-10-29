@@ -88,10 +88,10 @@ trait ClientJsonTrait
             $responseTimestamp = filter_var($timestamp, FILTER_VALIDATE_INT);
 
             if ($responseTimestamp === false
-                || abs($localTimestamp - $responseTimestamp) > Formatter::MAXIMUM_CLOCK_OFFSET) {
+                || abs($localTimestamp - $responseTimestamp) > MAXIMUM_CLOCK_OFFSET) {
                 throw new RequestException(sprintf(
                     Exception\DouYinPayException::ERR_RES_HEADER_TIMESTAMP_OFFSET,
-                    Formatter::MAXIMUM_CLOCK_OFFSET, $timestamp, $localTimestamp
+                    MAXIMUM_CLOCK_OFFSET, $timestamp, $localTimestamp
                 ), $request, $response);
             }
 

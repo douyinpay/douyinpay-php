@@ -48,12 +48,12 @@ class HttpClient {
         $req = SignOrVerify::sign($req, $this->merchantConfig["mchid"], $this->merchantConfig["serial"], $this->merchantConfig["privateKey"]);
         try {
             $resp = $this->baseClient->send($req, $options);
-            // 不成功时抛异常
-            \DouYinPay\SignOrVerify::verify($req, $resp, $this->merchantConfig["certs"]);
-            return $resp;
         } catch (GuzzleException $e) {
             return $this->exceptionCatch($e);
         }
+        // 本地验签异常必须向调用方传播，不能按 HTTP 状态异常转换为响应。
+        \DouYinPay\SignOrVerify::verify($req, $resp, $this->merchantConfig["certs"]);
+        return $resp;
     }
 
     private function exceptionCatch(GuzzleException $e):ResponseInterface {
