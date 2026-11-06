@@ -36,6 +36,16 @@ class SignOrVerify {
         [$signature] = $response->getHeader(Headers::Signature);
         [$timestamp] = $response->getHeader(Headers::Timestamp);
 
+        $localTimestamp = Formatter::timestamp();
+        $responseTimestamp = filter_var($timestamp, FILTER_VALIDATE_INT);
+        if ($responseTimestamp === false
+            || abs($localTimestamp - $responseTimestamp) > MAXIMUM_CLOCK_OFFSET) {
+            throw new ServerException(sprintf(
+                Exception\DouYinPayException::ERR_RES_HEADER_TIMESTAMP_OFFSET,
+                MAXIMUM_CLOCK_OFFSET, $timestamp, $localTimestamp
+            ), $request, $response);
+        }
+
         if (!array_key_exists($serial,$platformCerts)) {
             throw new ServerException(sprintf(
                 Exception\DouYinPayException::ERR_RES_HEADER_PLATFORM_SERIAL,
@@ -50,4 +60,3 @@ class SignOrVerify {
         }
     }
 }
-

@@ -3,7 +3,7 @@
 namespace DouYinPay;
 
 use function abs;
-use function intval;
+use function filter_var;
 use function is_string;
 use function is_resource;
 use function is_object;
@@ -23,10 +23,6 @@ use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\MessageInterface;
 use DouYinPay\Headers;
-
-/** @var int - The maximum clock offset in second */
-const MAXIMUM_CLOCK_OFFSET = 300;
-
 
 /**
  * JSON based Client interface for sending HTTP requests.
@@ -89,8 +85,10 @@ trait ClientJsonTrait
 
             // 校验本地时间与响应时间的最大偏移，防止重放
             $localTimestamp = Formatter::timestamp();
+            $responseTimestamp = filter_var($timestamp, FILTER_VALIDATE_INT);
 
-            if (abs($localTimestamp - intval($timestamp)) > MAXIMUM_CLOCK_OFFSET) {
+            if ($responseTimestamp === false
+                || abs($localTimestamp - $responseTimestamp) > MAXIMUM_CLOCK_OFFSET) {
                 throw new RequestException(sprintf(
                     Exception\DouYinPayException::ERR_RES_HEADER_TIMESTAMP_OFFSET,
                     MAXIMUM_CLOCK_OFFSET, $timestamp, $localTimestamp

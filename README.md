@@ -46,3 +46,9 @@ Use the `composer fund` command to find out more!
 2. 使用
 
 接口的使用方法可参考demo目录下的DouYinPayDemo.php中的query和pay方法
+
+### 2.2 响应验签时间窗
+
+SDK 在响应验签时会校验 `Douyinpay-Timestamp`，默认允许本地时间前后 300 秒的偏差。非法、过期或未来时间戳会导致验签失败并抛出异常，不会返回未经完整校验的响应。
+
+接入方应为服务器启用 NTP 校时，并在捕获验签异常后停止处理响应。

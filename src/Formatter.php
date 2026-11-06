@@ -2,6 +2,9 @@
 
 namespace DouYinPay;
 
+/** @var int - The maximum clock offset in seconds. */
+const MAXIMUM_CLOCK_OFFSET = 300;
+
 class Formatter
 {
     public static function nonce(int $size = 32): string
